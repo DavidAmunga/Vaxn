@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "114157002397",
+    "firebase_url": "https://vaxn-1e093.firebaseio.com",
+    "project_id": "vaxn-1e093",
+    "storage_bucket": "vaxn-1e093.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114157002397:android:bca03afb0fc0b0fa",
+        "android_client_info": {
+          "package_name": "com.buttercell.vaxn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114157002397-h6qovjt046vtelpff27o376686n8r1n7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.buttercell.vaxn",
+            "certificate_hash": "ee7f4dea610caa9191ff7eb912fae5164e48c5b2"
+          }
+        },
+        {
+          "client_id": "114157002397-1p3vs4gc6m5kcggdvfoobee4b2fna2mr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs-43OQzEJwu_RosNX0vcCbxEzGMG1O1M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114157002397-1p3vs4gc6m5kcggdvfoobee4b2fna2mr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

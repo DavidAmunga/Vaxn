@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.buttercell.vaxn.doctor.AddTest"
+    android:layout_margin="20dp"
+    >
+
+
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/txt_test_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="Enter Test Name......"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true" />
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/txt_full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_test_name"
+        android:hint="Enter Full Test Name......"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/txt_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_full_name"
+        android:hint="Enter Test Details......"
+        app:met_baseColor="@color/colorPrimary"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true" />
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/txt_test_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_details"
+        android:hint="Enter Test Age in Years......"
+        app:met_baseColor="@color/colorPrimary"
+        android:inputType="number"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@color/colorPrimary"
+        app:met_singleLineEllipsis="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lin1"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_below="@id/txt_test_age"
+        >
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/txt_doses"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/txt_details"
+            android:hint="Enter No of Doses"
+            android:text="1"
+            app:met_baseColor="@color/colorPrimary"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/colorPrimary"
+            app:met_singleLineEllipsis="true" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/txt_dose_gap"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/txt_details"
+            android:hint="Enter Dose Gap......"
+            android:textAlignment="center"
+            app:met_baseColor="@color/colorPrimary"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/colorPrimary"
+            app:met_singleLineEllipsis="true" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input"
+        android:text="Add Test"
+        android:id="@+id/btnAdd"
+        android:layout_marginTop="20dp"
+        android:textColor="#fff"
+        android:layout_below="@id/lin1"
+        />
+
+
+
+
+
+</RelativeLayout>
