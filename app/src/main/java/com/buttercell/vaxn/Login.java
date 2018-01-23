@@ -186,11 +186,16 @@ public class Login extends AppCompatActivity {
     }
 
     private void checkLogin() {
+
+
         String em = Paper.book().read("email");
         String pwd = Paper.book().read("pass");
 
         if (em != null && pwd != null) {
             if (!TextUtils.isEmpty(em) && !TextUtils.isEmpty(pwd)) {
+                mProgress.setMessage("One Moment Please...");
+                mProgress.setCancelable(false);
+                mProgress.show();
                 mAuth.signInWithEmailAndPassword(em, pwd)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override

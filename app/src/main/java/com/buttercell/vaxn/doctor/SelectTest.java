@@ -35,7 +35,7 @@ public class SelectTest extends AppCompatActivity {
 
 
         if (getIntent().getExtras() != null) {
-            user=(User) getIntent().getSerializableExtra("loan_type");;
+            user=(User) getIntent().getSerializableExtra("user");;
         }
         adapter=new FirebaseRecyclerAdapter<Test, DoctorTests.TestViewHolder>(
                 Test.class,

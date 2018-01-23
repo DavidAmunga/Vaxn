@@ -1,9 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.buttercell.vaxn.doctor.AddRecord">
+    tools:context="com.buttercell.vaxn.doctor.AddRecord"
+    android:layout_margin="20dp"
+    >
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textSize="20dp"
+            tools:text="Patient Name" />
+        <TextView
+            android:id="@+id/txt_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"
+            tools:text="User name" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textSize="20dp"
+            tools:text="Test" />
+        <TextView
+            android:id="@+id/txt_test_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"
+            tools:text="Test name" />
+
+        <EditText
+            android:id="@+id/txt_test_results"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Enter Test Results"
+            android:maxHeight="150dp"
+            />
+
+        <EditText
+            android:id="@+id/txt_test_comments"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Enter Result Comments"
+            android:maxHeight="150dp"
+            />
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/input"
+            android:text="Add Record"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+
+</RelativeLayout>
