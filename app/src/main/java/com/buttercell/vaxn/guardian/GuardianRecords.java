@@ -1,8 +1,8 @@
-package com.buttercell.vaxn;
+package com.buttercell.vaxn.guardian;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +24,7 @@ import io.paperdb.Paper;
  * Created by amush on 22-Jan-18.
  */
 
-public class PatientRecords extends Fragment {
+public class GuardianRecords extends Fragment {
 
     RecyclerView mList;
 
@@ -35,7 +35,7 @@ public class PatientRecords extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_patient_records, container, false);
+        return inflater.inflate(R.layout.fragment_guardians_records, container, false);
 
     }
 
@@ -56,20 +56,7 @@ public class PatientRecords extends Fragment {
         String name= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
 
-        adapter = new FirebaseRecyclerAdapter<Record, DoctorRecords.RecordViewHolder>(
-                Record.class,
-                R.layout.record_layout,
-                DoctorRecords.RecordViewHolder.class,
-                mDatabase.orderByChild("userName").equalTo(name)
-        ) {
-            @Override
-            protected void populateViewHolder(DoctorRecords.RecordViewHolder viewHolder, Record model, int position) {
-                viewHolder.setTestName(model.getTestName());
-                viewHolder.setUserName(model.getUserName());
-            }
-        };
 
-        mList.setAdapter(adapter);
 
     }
 

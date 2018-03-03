@@ -2,6 +2,7 @@ package com.buttercell.vaxn.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -15,11 +16,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
+import com.buttercell.vaxn.model.Patient;
 import com.buttercell.vaxn.model.Record;
 import com.buttercell.vaxn.model.Test;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 /**
  * Created by amush on 22-Jan-18.
@@ -63,18 +67,29 @@ public class DoctorRecords extends Fragment {
         mList.setLayoutManager(new LinearLayoutManager(getContext()));
         mList.setHasFixedSize(true);
 
+        Query query = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Records");
 
-        adapter = new FirebaseRecyclerAdapter<Record, RecordViewHolder>(
-                Record.class,
-                R.layout.record_layout,
-                RecordViewHolder.class,
-                mDatabase
-        ) {
+
+        FirebaseRecyclerOptions<Record> options =
+                new FirebaseRecyclerOptions.Builder<Record>()
+                        .setQuery(query, Record.class)
+                        .build();
+
+        adapter = new FirebaseRecyclerAdapter<Record, RecordViewHolder>(options) {
             @Override
-            protected void populateViewHolder(RecordViewHolder viewHolder, Record model, int position) {
-                viewHolder.setTestName(model.getTestName());
-                viewHolder.setUserName(model.getUserName());
+            public RecordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.record_layout,parent,false);
+                return new RecordViewHolder(view);
             }
+
+            @Override
+            protected void onBindViewHolder(@NonNull RecordViewHolder holder, int position, @NonNull Record model) {
+                holder.setTestName(model.getTestName());
+                holder.setUserName(model.getUserName());
+            }
+
         };
 
         mList.setAdapter(adapter);
@@ -102,5 +117,18 @@ public class DoctorRecords extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }

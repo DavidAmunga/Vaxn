@@ -3,6 +3,7 @@ package com.buttercell.vaxn.doctor;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,10 +18,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
+import com.buttercell.vaxn.model.Record;
 import com.buttercell.vaxn.model.Test;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 /**
  * Created by amush on 22-Jan-18.
@@ -31,8 +35,9 @@ public class DoctorTests extends Fragment {
 
 
     RecyclerView mList;
-    FirebaseRecyclerAdapter<Test,TestViewHolder> adapter;
+    FirebaseRecyclerAdapter<Test, TestViewHolder> adapter;
     DatabaseReference mDatabase;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,34 +50,43 @@ public class DoctorTests extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Tests");
 
-        FloatingActionButton fab=view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),AddTest.class));
+                startActivity(new Intent(getContext(), AddTest.class));
             }
         });
 
-        mDatabase= FirebaseDatabase.getInstance().getReference("Tests");
-        mList=view.findViewById(R.id.test_list);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Tests");
+        mList = view.findViewById(R.id.test_list);
         mList.setLayoutManager(new LinearLayoutManager(getContext()));
         mList.setHasFixedSize(true);
 
 
+        Query query = mDatabase;
 
 
-        adapter=new FirebaseRecyclerAdapter<Test, TestViewHolder>(
-                Test.class,
-                R.layout.test_layout,
-                TestViewHolder.class,
-                mDatabase
+        FirebaseRecyclerOptions<Test> options =
+                new FirebaseRecyclerOptions.Builder<Test>()
+                        .setQuery(mDatabase, Test.class)
+                        .build();
+
+        adapter = new FirebaseRecyclerAdapter<Test, TestViewHolder>(
+                options
         ) {
             @Override
-            protected void populateViewHolder(TestViewHolder viewHolder, final Test model, int position) {
-                viewHolder.setTestName(model.getTest_name());
-                viewHolder.setTestFullName(model.getTest_full_name());
+            public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_layout, parent, false);
+                return new TestViewHolder(view);
+            }
 
-                viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            protected void onBindViewHolder(@NonNull TestViewHolder holder, int position, @NonNull final Test model) {
+                holder.setTestName(model.getTest_name());
+                holder.setTestFullName(model.getTest_full_name());
+
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         showInfoDialog(model);
@@ -81,6 +95,8 @@ public class DoctorTests extends Fragment {
                     }
                 });
             }
+
+
         };
         mList.setAdapter(adapter);
 
@@ -95,11 +111,11 @@ public class DoctorTests extends Fragment {
         LayoutInflater inflater = this.getLayoutInflater();
         View info_layout = inflater.inflate(R.layout.test_info_layout, null);
 
-        TextView txt_full_name=info_layout.findViewById(R.id.txt_full_name);
-        TextView txt_details=info_layout.findViewById(R.id.txt_details);
-        TextView txt_start_age=info_layout.findViewById(R.id.txt_start_age);
-        TextView txt_doses=info_layout.findViewById(R.id.txt_doses);
-        TextView txt_dose_gap=info_layout.findViewById(R.id.txt_dose_gap);
+        TextView txt_full_name = info_layout.findViewById(R.id.txt_full_name);
+        TextView txt_details = info_layout.findViewById(R.id.txt_details);
+        TextView txt_start_age = info_layout.findViewById(R.id.txt_start_age);
+        TextView txt_doses = info_layout.findViewById(R.id.txt_doses);
+        TextView txt_dose_gap = info_layout.findViewById(R.id.txt_dose_gap);
 
 
         txt_full_name.setText(model.getTest_full_name());
@@ -115,30 +131,40 @@ public class DoctorTests extends Fragment {
 
     }
 
-    public static class TestViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class TestViewHolder extends RecyclerView.ViewHolder {
 
         public TestViewHolder(View itemView) {
             super(itemView);
         }
-        public void setTestName(String name)
-        {
-            TextView txtName=itemView.findViewById(R.id.txt_testname);
+
+        public void setTestName(String name) {
+            TextView txtName = itemView.findViewById(R.id.txt_testname);
             txtName.setText(name);
         }
-        public void setTestFullName(String name)
-        {
-            TextView txtFullName=itemView.findViewById(R.id.txt_full_name);
+
+        public void setTestFullName(String name) {
+            TextView txtFullName = itemView.findViewById(R.id.txt_full_name);
             txtFullName.setText(name);
 
         }
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }

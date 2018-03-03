@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".PatientHome"
+            android:name=".guardian.GuardianHome"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -37,9 +37,10 @@
             android:name=".doctor.AddTest"
             android:parentActivityName=".doctor.DoctorHome" />
         <activity android:name=".doctor.SelectUser" />
-        <activity android:name=".doctor.SelectTest"
-            android:parentActivityName=".doctor.SelectUser"
-            ></activity>
+        <activity
+            android:name=".doctor.SelectTest"
+            android:parentActivityName=".doctor.SelectUser" />
+        <activity android:name=".guardian.AddPatient"></activity>
     </application>
 
 </manifest>

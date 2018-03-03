@@ -12,6 +12,10 @@
             android:id="@+id/nav_records"
             android:icon="@drawable/ic_records"
             android:title="Records" />
+        <item
+            android:id="@+id/nav_patients"
+            android:icon="@drawable/ic_person_black"
+            android:title="Patients" />
 
         <item
             android:id="@+id/nav_log_out"

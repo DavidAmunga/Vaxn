@@ -3,7 +3,6 @@ package com.buttercell.vaxn.doctor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -15,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.buttercell.vaxn.Login;
-import com.buttercell.vaxn.PatientDashboard;
+import com.buttercell.vaxn.guardian.GuardianDashboard;
 import com.buttercell.vaxn.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.paperdb.Paper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -74,9 +75,24 @@ public class DoctorHome extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView txtUserName = headerView.findViewById(R.id.txtUsername);
+        TextView txtEmail = headerView.findViewById(R.id.txtEmail);
+        setNavDetails(txtUserName, txtEmail);
+
 
     }
 
+    private void setNavDetails(TextView txtUserName, TextView txtEmail) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+
+        txtUserName.setText(name);
+        txtEmail.setText(email);
+
+    }
+    
     private void displaySelectedScreen(int itemId) {
 
         //creating fragment object
@@ -102,7 +118,7 @@ public class DoctorHome extends AppCompatActivity
 
                 break;
             default:
-                fragment = new PatientDashboard();
+                fragment = new GuardianDashboard();
                 break;
 
         }
