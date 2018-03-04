@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.buttercell.vaxn.R;
+import com.buttercell.vaxn.model.Patient;
 import com.buttercell.vaxn.model.Test;
 import com.buttercell.vaxn.model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -29,7 +30,9 @@ public class SelectTest extends AppCompatActivity {
     RecyclerView mList;
     FirebaseRecyclerAdapter<Test,DoctorTests.TestViewHolder> adapter;
     DatabaseReference mDatabase;
-    User user;
+    Patient patient;
+    private String guardian_key;
+    private String patient_key;
 
 
     @Override
@@ -57,7 +60,9 @@ public class SelectTest extends AppCompatActivity {
 
 
         if (getIntent().getExtras() != null) {
-            user=(User) getIntent().getSerializableExtra("user");;
+            patient=(Patient) getIntent().getSerializableExtra("patient");;
+            guardian_key= getIntent().getStringExtra("guardian_key");;
+            patient_key= getIntent().getStringExtra("patient_key");;
         }
 
         Query query = mDatabase;
@@ -65,7 +70,7 @@ public class SelectTest extends AppCompatActivity {
 
         FirebaseRecyclerOptions<Test> options =
                 new FirebaseRecyclerOptions.Builder<Test>()
-                        .setQuery(mDatabase, Test.class)
+                        .setQuery(query, Test.class)
                         .build();
 
 
@@ -87,8 +92,10 @@ public class SelectTest extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(SelectTest.this,AddRecord.class);
-                        intent.putExtra("user",user);
+                        intent.putExtra("patient",patient);
                         intent.putExtra("test",model);
+                        intent.putExtra("patient_key", patient_key);
+                        intent.putExtra("guardian_key", guardian_key);
                         startActivity(intent);
                     }
                 });

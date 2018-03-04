@@ -5,10 +5,9 @@ package com.buttercell.vaxn.model;
  */
 
 public class Record {
-    public String userName,testName,testResults,testComments,dateAdded;
+    public String testName,testResults,testComments,dateAdded;
 
-    public Record(String userName, String testName, String testResults, String testComments, String dateAdded) {
-        this.userName = userName;
+    public Record( String testName, String testResults, String testComments, String dateAdded) {
         this.testName = testName;
         this.testResults = testResults;
         this.testComments = testComments;
@@ -18,13 +17,7 @@ public class Record {
     public Record() {
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getTestName() {
         return testName;

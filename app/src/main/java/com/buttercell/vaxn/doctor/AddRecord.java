@@ -14,12 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.buttercell.vaxn.R;
+import com.buttercell.vaxn.model.Patient;
 import com.buttercell.vaxn.model.Record;
 import com.buttercell.vaxn.model.Test;
 import com.buttercell.vaxn.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,9 +38,11 @@ public class AddRecord extends AppCompatActivity {
     Button btnAdd;
     ProgressDialog progressDialog;
 
-    User user;
+    Patient patient;
     Test test;
 
+
+    String guardian_key, patient_key;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -60,10 +64,12 @@ public class AddRecord extends AppCompatActivity {
         initViews();
 
         if (getIntent().getExtras() != null) {
-            user = (User) getIntent().getSerializableExtra("user");
+            patient = (Patient) getIntent().getSerializableExtra("patient");
             test = (Test) getIntent().getSerializableExtra("test");
+            guardian_key = getIntent().getStringExtra("guardian_key");
+            patient_key = getIntent().getStringExtra("patient_key");
 
-            txt_user_name.setText(user.getUserName());
+            txt_user_name.setText(String.valueOf(patient.getFirstName() + " " + patient.getLastName()));
             txt_test_name.setText(test.getTest_name());
 
         }
@@ -71,12 +77,12 @@ public class AddRecord extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add_record(user, test);
+                add_record(patient, test, guardian_key, patient_key);
             }
         });
     }
 
-    private void add_record(User user, Test test) {
+    private void add_record(Patient user, Test test, String guardian_key, String patient_key) {
         String test_results = txt_results.getText().toString().trim();
         String test_comments = txt_comments.getText().toString().trim();
 
@@ -90,9 +96,13 @@ public class AddRecord extends AppCompatActivity {
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String dateAdded = df.format(c.getTime());
 
-            Record record = new Record(user.getUserName(), test.getTest_name(), test_results, test_comments, dateAdded);
+            Record record = new Record(test.getTest_name(), test_results, test_comments, dateAdded);
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Records").push();
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users")
+                    .child(guardian_key).child("userPatients").
+                            child(patient_key).child("userRecords").push();
+
             ref.setValue(record).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

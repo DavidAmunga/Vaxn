@@ -16,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
-import com.buttercell.vaxn.model.Patient;
 import com.buttercell.vaxn.model.Record;
-import com.buttercell.vaxn.model.Test;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +55,7 @@ public class DoctorRecords extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), SelectUser.class));
+                startActivity(new Intent(getContext(), SelectGuardian.class));
             }
         });
 
@@ -87,7 +85,7 @@ public class DoctorRecords extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull RecordViewHolder holder, int position, @NonNull Record model) {
                 holder.setTestName(model.getTestName());
-                holder.setUserName(model.getUserName());
+                holder.setTestResults(model.getTestResults());
             }
 
         };
@@ -101,9 +99,9 @@ public class DoctorRecords extends Fragment {
             super(itemView);
         }
 
-        public void setUserName(String name) {
-            TextView txtName = itemView.findViewById(R.id.txt_userName);
-            txtName.setText(name);
+        public void setTestResults(String results) {
+            TextView txtTestResult = itemView.findViewById(R.id.txt_test_results);
+            txtTestResult.setText(results);
         }
 
         public void setTestName(String name) {

@@ -50,7 +50,7 @@ public class PatientDetails extends AppCompatActivity {
         setContentView(R.layout.activity_patient_details);
         ButterKnife.bind(this);
 
-        getSupportActionBar().setTitle("Patient Details");
+
 
         if (getIntent().getExtras() != null) {
             Patient patient = (Patient) getIntent().getExtras().getSerializable("patient");

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
-import com.buttercell.vaxn.model.Test;
 import com.buttercell.vaxn.model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -24,7 +23,7 @@ import com.google.firebase.database.Query;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class SelectUser extends AppCompatActivity {
+public class SelectGuardian extends AppCompatActivity {
 
     RecyclerView mList;
     DatabaseReference mDatabase;
@@ -43,25 +42,28 @@ public class SelectUser extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath).build());
         setContentView(R.layout.activity_select_user);
 
-        getSupportActionBar().setTitle("Select User");
+        getSupportActionBar().setTitle("Select Guardian");
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
         mList = findViewById(R.id.user_list);
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.setHasFixedSize(true);
 
 
-        Query query = mDatabase;
+        Query query = FirebaseDatabase.getInstance()
+                .getReference("Users").
+                        orderByChild("userRole").
+                        equalTo("Patient");
 
 
         FirebaseRecyclerOptions<User> options =
                 new FirebaseRecyclerOptions.Builder<User>()
-                        .setQuery(mDatabase, User.class)
+                        .setQuery(query, User.class)
                         .build();
 
         adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(
-         options
+                options
         ) {
             @Override
             public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -70,7 +72,7 @@ public class SelectUser extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull final User model) {
+            protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull final User model) {
                 holder.setUserAddress(model.getUserAddress());
                 holder.setUserMobileNo(model.getUserPhoneNo());
                 holder.setUserName(model.getUserName());
@@ -78,8 +80,9 @@ public class SelectUser extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(SelectUser.this, SelectTest.class);
-                        intent.putExtra("user", model);
+                        Intent intent = new Intent(SelectGuardian.this, SelectPatient.class);
+                        intent.putExtra("guadian", model);
+                        intent.putExtra("guardian_key",adapter.getRef(position).getKey());
                         startActivity(intent);
                     }
                 });

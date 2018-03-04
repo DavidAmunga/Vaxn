@@ -73,7 +73,7 @@ public class PatientRecords extends android.app.Fragment {
             @Override
             protected void onBindViewHolder(@NonNull DoctorRecords.RecordViewHolder holder, int position, @NonNull Record model) {
                 holder.setTestName(model.getTestName());
-                holder.setUserName(model.getUserName());
+                holder.setTestResults(model.getTestResults());
             }
 
         };
@@ -88,6 +88,18 @@ public class PatientRecords extends android.app.Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }
 

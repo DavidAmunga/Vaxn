@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.buttercell.vaxn.doctor.SelectGuardian">
-
-
+    tools:context="com.buttercell.vaxn.doctor.SelectPatient">
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/user_list"
+        android:id="@+id/patientList"
         />
 
 </RelativeLayout>

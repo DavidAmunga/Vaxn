@@ -36,12 +36,13 @@
         <activity
             android:name=".doctor.AddTest"
             android:parentActivityName=".doctor.DoctorHome" />
-        <activity android:name=".doctor.SelectUser" />
+        <activity android:name=".doctor.SelectGuardian" />
         <activity
             android:name=".doctor.SelectTest"
-            android:parentActivityName=".doctor.SelectUser" />
+            android:parentActivityName=".doctor.SelectPatient" />
         <activity android:name=".guardian.AddPatient" />
-        <activity android:name=".guardian.PatientDetails"></activity>
+        <activity android:name=".guardian.PatientDetails" android:theme="@style/DarkStatusBar" />
+        <activity android:name=".doctor.SelectPatient" android:parentActivityName=".doctor.SelectGuardian"></activity>
     </application>
 
 </manifest>
