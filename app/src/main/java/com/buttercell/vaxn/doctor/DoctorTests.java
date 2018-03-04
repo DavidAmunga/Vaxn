@@ -69,7 +69,7 @@ public class DoctorTests extends Fragment {
 
         FirebaseRecyclerOptions<Test> options =
                 new FirebaseRecyclerOptions.Builder<Test>()
-                        .setQuery(mDatabase, Test.class)
+                        .setQuery(query, Test.class)
                         .build();
 
         adapter = new FirebaseRecyclerAdapter<Test, TestViewHolder>(

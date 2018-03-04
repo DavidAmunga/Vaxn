@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class GuardianPatients extends Fragment {
     @BindView(R.id.fab)
     FloatingActionButton fab;
     Unbinder unbinder;
-    FirebaseRecyclerAdapter<Patient,PatientViewHolder> adapter;
+    FirebaseRecyclerAdapter<Patient, PatientViewHolder> adapter;
 
     public GuardianPatients() {
         // Required empty public constructor
@@ -71,11 +72,10 @@ public class GuardianPatients extends Fragment {
         patientList.setHasFixedSize(true);
         patientList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase= FirebaseDatabase.getInstance().getReference("Users").child(userId).child("userPatients");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-        Query query = mDatabase;
+        Query query = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("userPatients");
 
 
         FirebaseRecyclerOptions<Patient> options =
@@ -83,23 +83,35 @@ public class GuardianPatients extends Fragment {
                         .setQuery(query, Patient.class)
                         .build();
 
-       adapter=new FirebaseRecyclerAdapter<Patient, PatientViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<Patient, PatientViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull PatientViewHolder holder, int position, @NonNull Patient model) {
-                holder.setPatientName(model.getFirstName(),model.getLastName());
+            protected void onBindViewHolder(@NonNull PatientViewHolder holder, final int position, @NonNull final Patient model) {
+
+                holder.setPatientName(model.getFirstName(), model.getLastName());
                 holder.setPatientDob(model.getDob());
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getContext(), PatientDetails.class)
+                        .putExtra("key", adapter.getRef(position).getKey())
+                        .putExtra("patient", (Serializable) model));
+
+
+                    }
+                });
 
 
             }
 
             @Override
             public PatientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.patient_layout,parent,false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.patient_layout, parent, false);
                 return new PatientViewHolder(view);
             }
         };
 
-       patientList.setAdapter(adapter);
+        patientList.setAdapter(adapter);
 
 
     }
@@ -112,21 +124,21 @@ public class GuardianPatients extends Fragment {
 
     @OnClick(R.id.fab)
     public void onViewClicked() {
-        startActivity(new Intent(getContext(),AddPatient.class));
+        startActivity(new Intent(getContext(), AddPatient.class));
     }
-    public static class PatientViewHolder extends RecyclerView.ViewHolder
-    {
+
+    public static class PatientViewHolder extends RecyclerView.ViewHolder {
 
         public PatientViewHolder(View itemView) {
             super(itemView);
         }
-        public void setPatientName(String firstName,String lastName)
-        {
-            TextView txtPatientName=itemView.findViewById(R.id.txt_patient_name);
-            txtPatientName.setText(String.valueOf(firstName+" "+lastName));
+
+        public void setPatientName(String firstName, String lastName) {
+            TextView txtPatientName = itemView.findViewById(R.id.txt_patient_name);
+            txtPatientName.setText(String.valueOf(firstName + " " + lastName));
         }
-        public void setPatientDob(String date)
-        {
+
+        public void setPatientDob(String date) {
             TextView txtDate = itemView.findViewById(R.id.txt_dob);
             try {
 
@@ -144,6 +156,7 @@ public class GuardianPatients extends Fragment {
         }
 
     }
+
     @Override
     public void onStart() {
         super.onStart();

@@ -49,8 +49,13 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
     implementation 'com.github.d-max:spots-dialog:0.7@aar'
     implementation 'com.firebaseui:firebase-ui-database:2.3.0'
+    compile 'com.ogaclejapan.smarttablayout:utils-v13:1.6.1@aar'
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     implementation 'com.github.santalu:diagonal-imageview:1.0.2'
 }
+
+
+
 
 
 

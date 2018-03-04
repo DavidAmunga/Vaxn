@@ -1,10 +1,12 @@
 package com.buttercell.vaxn.model;
 
+import java.io.Serializable;
+
 /**
  * Created by amush on 03-Mar-18.
  */
 
-public class Patient {
+public class Patient implements Serializable {
     private String firstName,lastName,dob;
 
     public Patient(String firstName, String lastName, String dob) {

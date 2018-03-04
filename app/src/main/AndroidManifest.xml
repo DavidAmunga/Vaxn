@@ -40,7 +40,8 @@
         <activity
             android:name=".doctor.SelectTest"
             android:parentActivityName=".doctor.SelectUser" />
-        <activity android:name=".guardian.AddPatient"></activity>
+        <activity android:name=".guardian.AddPatient" />
+        <activity android:name=".guardian.PatientDetails"></activity>
     </application>
 
 </manifest>
