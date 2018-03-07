@@ -16,9 +16,9 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:cardCornerRadius="5dp"
             app:cardElevation="4dp"
-            android:layout_marginTop="20dp"
 
             >
 
@@ -28,20 +28,20 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txt_patient_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:id="@+id/txt_patient_name"
                     android:text="PATIENT NAME"
                     android:textColor="@color/colorBlack"
                     android:textSize="25sp" />
 
                 <TextView
+                    android:id="@+id/txt_patient_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="Date of Birth: "
-                    android:id="@+id/txt_patient_dob"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp" />
 
@@ -51,11 +51,11 @@
 
         <com.ogaclejapan.smarttablayout.SmartTabLayout
             android:id="@+id/viewpagertab"
+            fontPath="fonts/AvenirLTStd-Book_0.otf"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
             app:stl_clickable="true"
-            fontPath="fonts/AvenirLTStd-Book_0.otf"
             app:stl_defaultTabBackground="?attr/selectableItemBackground"
 
             app:stl_defaultTabTextColor="@color/colorWhite"

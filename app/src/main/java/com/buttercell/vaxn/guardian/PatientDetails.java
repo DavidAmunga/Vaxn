@@ -51,18 +51,16 @@ public class PatientDetails extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-
         if (getIntent().getExtras() != null) {
             Patient patient = (Patient) getIntent().getExtras().getSerializable("patient");
             String key = getIntent().getExtras().getString("key");
 
-            setPatientName(patient.getFirstName(),patient.getLastName());
+            setPatientName(patient.getFirstName(), patient.getLastName());
             setPatientDob(patient.getDob());
 
-            Common.patient_key=key;
+            Common.patient_key = key;
 
         }
-
 
 
         FragmentPagerItems pages = new FragmentPagerItems(this);
@@ -80,8 +78,8 @@ public class PatientDetails extends AppCompatActivity {
         viewPagerTab.setViewPager(viewPager);
 
 
-
     }
+
     public void setPatientName(String firstName, String lastName) {
         txtPatientName.setText(String.valueOf(firstName + " " + lastName));
     }
