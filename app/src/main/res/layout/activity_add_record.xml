@@ -4,69 +4,189 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.buttercell.vaxn.doctor.AddRecord"
-    android:layout_margin="20dp"
-    >
+    android:background="@drawable/bg"
+    tools:context="com.buttercell.vaxn.doctor.AddRecord">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:clickable="true"
+        android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:textSize="20dp"
-            tools:text="Patient Name" />
-        <TextView
-            android:id="@+id/txt_userName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25dp"
-            tools:text="User name" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:textSize="20dp"
-            tools:text="Test" />
-        <TextView
-            android:id="@+id/txt_test_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25dp"
-            tools:text="Test name" />
+            android:orientation="vertical"
 
-        <EditText
-            android:id="@+id/txt_test_results"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="Enter Test Results"
-            android:maxHeight="150dp"
-            />
+            >
 
-        <EditText
-            android:id="@+id/txt_test_comments"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="Enter Result Comments"
-            android:maxHeight="150dp"
-            />
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="5dp"
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/input"
-            android:text="Add Record"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite" />
-    </LinearLayout>
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20dp"
+                        tools:text="Patient Name" />
+
+                    <TextView
+                        android:id="@+id/txt_userName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="25dp"
+                        tools:text="User name" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textSize="20dp"
+                        tools:text="Test" />
+
+                    <TextView
+                        android:id="@+id/txt_test_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="25dp"
+                        tools:text="Test name" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/txt_test_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="Enter Test Results......"
+                android:textColorHint="@color/colorWhite"
+                app:met_baseColor="@color/colorWhite"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/colorWhite"
+                app:met_singleLineEllipsis="true"
+                app:met_textColor="@color/colorWhite" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/txt_test_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="Enter Test Comments......"
+                android:textColorHint="@color/colorWhite"
+                app:met_baseColor="@color/colorWhite"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/colorWhite"
+                app:met_singleLineEllipsis="true"
+                app:met_textColor="@color/colorWhite" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/scheduleBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="@color/colorWhite"
+                android:buttonTint="@color/colorWhite"
+                android:shadowColor="@color/colorWhite"
+                android:text="Schedule Next appointment"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardAppointment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="5dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btnDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:text="Date"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="25dp" />
+
+                        <TextView
+                            android:id="@+id/txtAppointmentDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25dp"
+                            tools:text="Date name" />
+
+                    </LinearLayout>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/txt_testName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:hint="Enter Test Name......"
+                        android:textColorHint="@color/colorPrimary"
+                        app:met_baseColor="@color/colorPrimary"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="@color/colorPrimary"
+                        app:met_singleLineEllipsis="true"
+                        app:met_textColor="@color/colorPrimary" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/input"
+                android:text="Add Record"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

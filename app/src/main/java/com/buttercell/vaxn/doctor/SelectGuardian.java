@@ -54,7 +54,7 @@ public class SelectGuardian extends AppCompatActivity {
         Query query = FirebaseDatabase.getInstance()
                 .getReference("Users").
                         orderByChild("userRole").
-                        equalTo("Patient");
+                        equalTo("Guardian");
 
 
         FirebaseRecyclerOptions<User> options =

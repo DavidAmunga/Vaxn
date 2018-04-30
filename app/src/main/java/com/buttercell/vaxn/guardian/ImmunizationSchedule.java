@@ -1,24 +1,20 @@
-package com.buttercell.vaxn.doctor;
+package com.buttercell.vaxn.guardian;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
-import com.buttercell.vaxn.model.Record;
+import com.buttercell.vaxn.doctor.DoctorTests;
+import com.buttercell.vaxn.model.Patient;
 import com.buttercell.vaxn.model.Test;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -26,42 +22,37 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-/**
- * Created by amush on 22-Jan-18.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class DoctorTests extends Fragment {
-    private static final String TAG = "DoctorTests";
+public class ImmunizationSchedule extends AppCompatActivity {
 
+    private static final String TAG = "ImmunizationSchedule";
 
-    RecyclerView mList;
-    FirebaseRecyclerAdapter<Test, TestViewHolder> adapter;
+    FirebaseRecyclerAdapter<Test, DoctorTests.TestViewHolder> adapter;
     DatabaseReference mDatabase;
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_doctor_tests, container, false);
-
-    }
+    @BindView(R.id.test_list)
+    RecyclerView testList;
 
     @Override
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Tests");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_immunization_schedule);
+        ButterKnife.bind(this);
 
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), AddTest.class));
-            }
-        });
+
+        if (getIntent().getExtras() != null) {
+            Patient patient = (Patient) getIntent().getExtras().getSerializable("patient");
+
+            getSupportActionBar().setTitle(patient.getFirstName() + "'s Schedule");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        }
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Tests");
-        mList = view.findViewById(R.id.test_list);
-        mList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mList.setHasFixedSize(true);
+        testList.setLayoutManager(new LinearLayoutManager(this));
+        testList.setHasFixedSize(true);
 
 
         Query query = mDatabase;
@@ -72,17 +63,17 @@ public class DoctorTests extends Fragment {
                         .setQuery(query, Test.class)
                         .build();
 
-        adapter = new FirebaseRecyclerAdapter<Test, TestViewHolder>(
+        adapter = new FirebaseRecyclerAdapter<Test, DoctorTests.TestViewHolder>(
                 options
         ) {
             @Override
-            public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            public DoctorTests.TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_layout, parent, false);
-                return new TestViewHolder(view);
+                return new DoctorTests.TestViewHolder(view);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull TestViewHolder holder, int position, @NonNull final Test model) {
+            protected void onBindViewHolder(@NonNull DoctorTests.TestViewHolder holder, int position, @NonNull final Test model) {
                 holder.setTestName(model.getTest_name());
                 holder.setTestFullName(model.getTest_full_name());
 
@@ -90,7 +81,6 @@ public class DoctorTests extends Fragment {
                     @Override
                     public boolean onLongClick(View v) {
                         showInfoDialog(model);
-
                         return false;
                     }
                 });
@@ -98,14 +88,12 @@ public class DoctorTests extends Fragment {
 
 
         };
-        mList.setAdapter(adapter);
-
-
+        testList.setAdapter(adapter);
     }
 
     private void showInfoDialog(Test model) {
         Log.d(TAG, "showInfoDialog:Starts ");
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(model.getTest_name());
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -130,32 +118,6 @@ public class DoctorTests extends Fragment {
         alertDialog.show();
 
     }
-
-    public static class TestViewHolder extends RecyclerView.ViewHolder {
-
-        public TestViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        public void setTestName(String name) {
-            TextView txtName = itemView.findViewById(R.id.txt_testname);
-            txtName.setText(name);
-        }
-
-        public void setTestFullName(String name) {
-            TextView txtFullName = itemView.findViewById(R.id.txt_full_name);
-            txtFullName.setText(name);
-
-        }
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -167,4 +129,5 @@ public class DoctorTests extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
 }

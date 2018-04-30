@@ -1,5 +1,6 @@
 package com.buttercell.vaxn.doctor;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,124 +10,118 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
-import com.buttercell.vaxn.model.Record;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.buttercell.vaxn.adapter.PatientAdapter;
+import com.buttercell.vaxn.model.Patient;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
- * Created by amush on 22-Jan-18.
+ * A simple {@link Fragment} subclass.
  */
-
 public class DoctorRecords extends Fragment {
+    private static final String TAG = "DoctorRecords";
 
-    RecyclerView mList;
+    @BindView(R.id.records_list)
+    RecyclerView patientList;
 
-    DatabaseReference mDatabase;
-    FirebaseRecyclerAdapter<Record, RecordViewHolder> adapter;
+    Unbinder unbinder;
+    List<Patient> listPatient = new ArrayList<>();
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
 
-    @Nullable
+    public DoctorRecords() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_doctor_records, container, false);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_doctor_records, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setHasOptionsMenu(true);
+        getActivity().setTitle("All Patients");
+
+        patientList.setHasFixedSize(true);
+        patientList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        getActivity().setTitle("Patient Records");
-
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final DatabaseReference refGuardian = FirebaseDatabase.getInstance().getReference("Users");
+        refGuardian.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), SelectGuardian.class));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    if (postSnapshot.child("userRole").getValue().equals("Guardian")) {
+                        String key = postSnapshot.getKey();
+                        if (refGuardian.child(key).child("userPatients") != null) {
+                            refGuardian.child(key).child("userPatients").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        Patient patient = snapshot.getValue(Patient.class);
+
+                                        listPatient.add(patient);
+
+                                        PatientAdapter patientAdapter = new PatientAdapter(listPatient, getContext());
+
+                                        patientList.setAdapter(patientAdapter);
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Records");
-        mList = view.findViewById(R.id.records_list);
-        mList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mList.setHasFixedSize(true);
-
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Records");
-
-
-        FirebaseRecyclerOptions<Record> options =
-                new FirebaseRecyclerOptions.Builder<Record>()
-                        .setQuery(query, Record.class)
-                        .build();
-
-        adapter = new FirebaseRecyclerAdapter<Record, RecordViewHolder>(options) {
-            @Override
-            public RecordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.record_layout,parent,false);
-                return new RecordViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull RecordViewHolder holder, int position, @NonNull Record model) {
-                holder.setTestName(model.getTestName());
-                holder.setTestResults(model.getTestResults());
-            }
-
-        };
-
-        mList.setAdapter(adapter);
-    }
-
-    public static class RecordViewHolder extends RecyclerView.ViewHolder {
-
-        public RecordViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        public void setTestResults(String results) {
-            TextView txtTestResult = itemView.findViewById(R.id.txt_test_results);
-            txtTestResult.setText(results);
-        }
-
-        public void setTestName(String name) {
-            TextView txtTestName = itemView.findViewById(R.id.txt_test_name);
-            txtTestName.setText(name);
-        }
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
+
+    @OnClick(R.id.fab)
+    public void onViewClicked() {
+        startActivity(new Intent(getContext(), SelectGuardian.class));
+    }
+
+
 }

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
-import com.buttercell.vaxn.doctor.DoctorRecords;
 import com.buttercell.vaxn.model.Patient;
 import com.buttercell.vaxn.model.Record;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -25,10 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.santalu.diagonalimageview.DiagonalImageView;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -90,7 +91,32 @@ public class GuardianPatients extends Fragment {
                 holder.setPatientName(model.getFirstName(), model.getLastName());
                 holder.setPatientDob(model.getDob());
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                try {
+                    Calendar patientDate = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    patientDate.setTime(sdf.parse(model.getDob()));// all done
+
+
+
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                holder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getContext(), ImmunizationSchedule.class)
+                                .putExtra("key", adapter.getRef(position).getKey())
+                                .putExtra("patient", (Serializable) model));
+
+                    }
+                });
+
+                holder.txtPatientName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         startActivity(new Intent(getContext(), PatientDetails.class)
@@ -98,8 +124,10 @@ public class GuardianPatients extends Fragment {
                         .putExtra("patient", (Serializable) model));
 
 
+
                     }
                 });
+
 
 
             }
@@ -129,8 +157,14 @@ public class GuardianPatients extends Fragment {
 
     public static class PatientViewHolder extends RecyclerView.ViewHolder {
 
+
+        DiagonalImageView imageView;
+        TextView txtPatientName;
+
         public PatientViewHolder(View itemView) {
             super(itemView);
+            imageView=itemView.findViewById(R.id.image);
+            txtPatientName=itemView.findViewById(R.id.txt_patient_name);
         }
 
         public void setPatientName(String firstName, String lastName) {

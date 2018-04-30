@@ -6,4 +6,5 @@ package com.buttercell.vaxn.common;
 
 public class Common {
     public static String patient_key="";
+    public static String guardian_key="";
 }

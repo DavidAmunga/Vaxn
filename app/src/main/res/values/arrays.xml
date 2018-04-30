@@ -2,6 +2,6 @@
 <resources>
     <string-array name="array_occupation">
         <item>Doctor</item>
-        <item>Patient</item>
+        <item>Guardian</item>
     </string-array>
 </resources>

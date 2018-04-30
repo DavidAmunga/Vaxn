@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    public String userRole,userPhotoUrl,userPhoneNo,userName,userEmail,userDob,userAddress;
+    public String userRole, userPhotoUrl, userPhoneNo, userName, userEmail, userDob, userAddress;
 
     public User(String userRole, String userPhotoUrl, String userPhoneNo, String userName, String userEmail, String userDob, String userAddress) {
         this.userRole = userRole;

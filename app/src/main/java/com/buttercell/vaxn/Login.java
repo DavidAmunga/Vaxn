@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.buttercell.vaxn.doctor.DoctorHome;
 import com.buttercell.vaxn.guardian.GuardianHome;
+import com.buttercell.vaxn.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -153,8 +154,10 @@ public class Login extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String userRole=dataSnapshot.child("userRole").getValue().toString();
                 String userName=dataSnapshot.child("userName").getValue().toString();
-                if(userRole.equals("Patient"))
+                if(userRole.equals("Guardian"))
                 {
+                    User currentUser=dataSnapshot.getValue(User.class);
+                    Paper.book().write("currentUser",currentUser);
                     mProgress.dismiss();
                     Toast.makeText(Login.this, "Welcome! "+userName, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, GuardianHome.class));
@@ -162,6 +165,8 @@ public class Login extends AppCompatActivity {
                 }
                 else if(userRole.equals("Doctor"))
                 {
+                    User currentUser=dataSnapshot.getValue(User.class);
+                    Paper.book().write("currentUser",currentUser);
                     mProgress.dismiss();
                     Toast.makeText(Login.this, "Welcome! Dr. "+userName, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, DoctorHome.class));

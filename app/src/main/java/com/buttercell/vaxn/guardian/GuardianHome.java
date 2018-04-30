@@ -42,7 +42,7 @@ public class GuardianHome extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        displaySelectedScreen(R.id.nav_dashboard);
+        displaySelectedScreen(R.id.nav_patients);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -127,12 +127,6 @@ public class GuardianHome extends AppCompatActivity
 
         //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.nav_dashboard:
-                fragment = new GuardianDashboard();
-                break;
-            case R.id.nav_records:
-                fragment = new GuardianRecords();
-                break;
             case R.id.nav_patients:
                 fragment = new GuardianPatients();
                 break;

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.buttercell.vaxn.R;
 import com.buttercell.vaxn.common.Common;
 import com.buttercell.vaxn.model.Patient;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItemAdapter;
@@ -25,6 +27,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PatientDetails extends AppCompatActivity {
+
+
+    private static final String TAG = "PatientDetails";
 
     @BindView(R.id.viewpagertab)
     SmartTabLayout viewPagerTab;
@@ -53,12 +58,18 @@ public class PatientDetails extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             Patient patient = (Patient) getIntent().getExtras().getSerializable("patient");
-            String key = getIntent().getExtras().getString("key");
 
             setPatientName(patient.getFirstName(), patient.getLastName());
             setPatientDob(patient.getDob());
 
-            Common.patient_key = key;
+            String patientKey=patient.getPatientKey();
+            String guardianKey=patient.getGuardianKey();
+
+
+            Log.d(TAG, "onCreate: Patient Key"+patientKey);
+
+            Common.patient_key = patientKey;
+            Common.guardian_key=guardianKey;
 
         }
 

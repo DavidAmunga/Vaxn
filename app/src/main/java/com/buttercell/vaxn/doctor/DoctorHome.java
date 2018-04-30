@@ -46,7 +46,7 @@ public class DoctorHome extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        displaySelectedScreen(R.id.nav_dashboard);
+        displaySelectedScreen(R.id.nav_records);
 
 
         //        Switching fragments
@@ -100,9 +100,6 @@ public class DoctorHome extends AppCompatActivity
 
         //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.nav_dashboard:
-                fragment = new DoctorDashboard();
-                break;
             case R.id.nav_records:
                 fragment = new DoctorRecords();
                 break;
@@ -117,9 +114,7 @@ public class DoctorHome extends AppCompatActivity
                 finish();
 
                 break;
-            default:
-                fragment = new GuardianDashboard();
-                break;
+
 
         }
 

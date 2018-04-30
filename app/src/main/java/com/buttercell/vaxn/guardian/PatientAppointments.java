@@ -1,9 +1,17 @@
 package com.buttercell.vaxn.guardian;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +23,8 @@ import android.widget.TextView;
 
 import com.buttercell.vaxn.R;
 import com.buttercell.vaxn.common.Common;
-import com.buttercell.vaxn.doctor.DoctorRecords;
 import com.buttercell.vaxn.model.Appointment;
+import com.buttercell.vaxn.model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,11 +33,15 @@ import com.google.firebase.database.Query;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.paperdb.Paper;
+
+import static android.content.Context.ALARM_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +52,9 @@ public class PatientAppointments extends android.app.Fragment {
     @BindView(R.id.appointmentList)
     RecyclerView appointmentList;
     Unbinder unbinder;
+    String guardianKey="";
+
+    FirebaseRecyclerAdapter<Appointment, AppointmentViewHolder> adapter;
 
     public PatientAppointments() {
         // Required empty public constructor
@@ -55,16 +70,32 @@ public class PatientAppointments extends android.app.Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Paper.init(getContext());
 
+        if(Paper.book().read("currentUser")!=null)
+        {
+            User user=Paper.book().read("currentUser");
+
+            if(user.getUserRole().equals("Doctor"))
+            {
+                guardianKey=Common.guardian_key;
+                Log.d(TAG, "onViewCreated: Guardian Key"+Common.guardian_key);
+            }
+            else
+            {
+                guardianKey=FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+        }
 
         Query query = FirebaseDatabase.getInstance().getReference("Users").
-                child(userId).child("userPatients").
+                child(guardianKey).child("userPatients").
                 child(Common.patient_key).child("userAppointments");
+
 
 
         FirebaseRecyclerOptions<Appointment> options =
@@ -72,9 +103,10 @@ public class PatientAppointments extends android.app.Fragment {
                         .setQuery(query, Appointment.class)
                         .build();
 
-        FirebaseRecyclerAdapter<Appointment, AppointmentViewHolder> adapter = new FirebaseRecyclerAdapter<Appointment, AppointmentViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<Appointment, AppointmentViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position, @NonNull Appointment model) {
+                Log.d(TAG, "onBindViewHolder: Start");
                 holder.setAppointmentDate(model.getVisitDate());
                 holder.setTestName(model.getTestName());
             }
@@ -91,6 +123,7 @@ public class PatientAppointments extends android.app.Fragment {
 
 
     }
+
 
     public class AppointmentViewHolder extends RecyclerView.ViewHolder {
 
@@ -109,7 +142,7 @@ public class PatientAppointments extends android.app.Fragment {
                 SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd");
                 Date newDate = sdf1.parse(oldDate.toString());
 
-                txtDate.setText("Date of Birth : " + sdf1.format(newDate).toString());
+                txtDate.setText(sdf1.format(newDate).toString());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -121,6 +154,17 @@ public class PatientAppointments extends android.app.Fragment {
             txtName.setText(name);
 
         }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     @Override

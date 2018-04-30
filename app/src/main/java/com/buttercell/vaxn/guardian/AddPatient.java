@@ -83,9 +83,11 @@ public class AddPatient extends AppCompatActivity implements DatePickerDialog.On
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-            Patient patient = new Patient(firstName, lastName, dob);
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("userPatients").push();
+            String patientKey=FirebaseDatabase.getInstance().getReference("Users").child(userId).child("userPatients").push().getKey();
+
+            Patient patient = new Patient(firstName, lastName, dob,userId,patientKey);
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("userPatients").child(patientKey);
             ref.setValue(patient).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

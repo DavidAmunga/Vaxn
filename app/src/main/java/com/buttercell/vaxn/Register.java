@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.buttercell.vaxn.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,7 +38,8 @@ import io.paperdb.Paper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class Register extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class
+Register extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "Register";
 
@@ -141,13 +143,11 @@ public class Register extends AppCompatActivity implements DatePickerDialog.OnDa
 
                                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(id);
-                                    ref.child("userEmail").setValue(email);
-                                    ref.child("userName").setValue(userName);
-                                    ref.child("userPhoneNo").setValue(phoneNo);
-                                    ref.child("userAddress").setValue(address);
-                                    ref.child("userDob").setValue(dob);
-                                    ref.child("userRole").setValue(type);
+                                    User currentUser=new User(type,"",phoneNo,userName,email,dob,address);
+                                    ref.setValue(currentUser);
 
+
+                                    Paper.book().write("currentUser",currentUser);
                                     Paper.book().write("email", email);
                                     Paper.book().write("pass", password);
                                     Paper.book().write("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());

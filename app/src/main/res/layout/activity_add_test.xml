@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/txt_details"
-        android:hint="Enter Test Age in Years......"
+        android:hint="Enter Test Age in months......"
         app:met_baseColor="@color/colorPrimary"
         android:inputType="number"
         app:met_floatingLabel="highlight"

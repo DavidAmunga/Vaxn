@@ -4,10 +4,7 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp"
-            android:title="Dashboard" />
+
         <item
             android:id="@+id/nav_records"
             android:icon="@drawable/ic_event_note"
@@ -15,7 +12,7 @@
         <item
             android:id="@+id/nav_tests"
             android:icon="@drawable/ic_local_hospital"
-            android:title="Tests" />
+            android:title="Vaccination Tests" />
 
         <item
             android:id="@+id/nav_log_out"

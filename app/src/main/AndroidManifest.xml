@@ -41,8 +41,13 @@
             android:name=".doctor.SelectTest"
             android:parentActivityName=".doctor.SelectPatient" />
         <activity android:name=".guardian.AddPatient" />
-        <activity android:name=".guardian.PatientDetails" android:theme="@style/DarkStatusBar" />
-        <activity android:name=".doctor.SelectPatient" android:parentActivityName=".doctor.SelectGuardian"></activity>
+        <activity
+            android:name=".guardian.PatientDetails"
+            android:theme="@style/DarkStatusBar" />
+        <activity
+            android:name=".doctor.SelectPatient"
+            android:parentActivityName=".doctor.SelectGuardian" />
+        <activity android:name=".guardian.ImmunizationSchedule" />
     </application>
 
 </manifest>
